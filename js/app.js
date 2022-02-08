@@ -1,35 +1,82 @@
+function AddMovieForm(props) {
+    const [name, setName] = React.useState("");
 
+    function handleChange(e) {
+        // console.log(e.target.value);
+        setName(e.target.value);
+    }
+    function handleSubmit(e) {
+        e.preventDefault();
+        props.onAdd(name);
+        setName("");
+    }
+
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <input type="text" value={name} onChange={handleChange} />
+            <input type="submit" value="Add item" />
+        </form>
+    );
+}
+
+
+function MovieList(props) {
+    function handleDelete(id) {
+        props.onDelete(id);
+    }
+    return (
+        < div >
+            <ul>
+                {props.movies.map(function (movie) {
+                    return (
+                        <li key={movie.id}> {movie.text} {""}
+                            <button onClick={() => handleDelete(movie.id)}>Delete</button>
+                        </li>
+                    );
+                })}
+            </ul>
+        </div >
+    );
+
+}
 
 function App() {
 
     const initialState = [
         { id: 1, text: 'The Matrix' },
-        { id: 1, text: 'The Dark Knight' },
-        { id: 1, text: 'Ironman' },
-    ]
+        { id: 2, text: 'The Dark Knight' },
+        { id: 3, text: 'Ironman' },
+    ];
 
-    const [state, changeState] = React.useState(initialState);
-    // const [name, setName] = React.useState('')
+    const [movies, setMovies] = React.useState(initialState);
 
-    // function handleChange(e) {
-    //     setName(e.target.value)
-    // }
+
+    function handleDelete(id) {
+        setMovies((prev) => {
+            const items = prev.filter((i) => i.id != id);
+            return items;
+        });
+    }
+
+    function handleMovieAdd(name) {
+        const movie = {
+            id: new Date().getTime(),
+            text: name,
+        };
+
+        const newMovies = [...initialState];
+        newMovies.push(movie);
+
+        setMovies(newMovies);
+    }
+
     return (
         <div>
-            <ul> {state.map(function (item) {
-                return (
-                    <li key={item.id}> {item.text}</li>
-                )
-            })}</ul>
+            <AddMovieForm onAdd={handleMovieAdd} />
+            <MovieList movies={movies} onDelete={handleDelete} />
         </div>
-        // <div>
-        //     <p>{name}</p>
-        //     <br />
-        //     <input type="text" value={name} onChange={handleChange} />
-        // </div>
-    )
+    );
+
 }
-    //   function App()
-    //   {
-    //       return <div> Hello world </div>
-    //   }
+ReactDOM.render(<App />, document.querySelector("#app"));
