@@ -41,6 +41,23 @@ function MovieList(props) {
 
 }
 
+// function handleUpdate(id) {
+// }
+
+// return (
+//     <div>
+//         <ul>
+//             {props.movies.map(function (movie) {
+//                 return (
+//                     <li key={movie.is}> {movie.text} {""}
+//                         <button onCLick={() => handleUpdate(movie.id)}>Update</button>
+//                     </li>
+//                 );
+//             })}
+//         </ul>
+//     </div>
+// )
+
 function App() {
 
     const initialState = [
@@ -59,24 +76,30 @@ function App() {
         });
     }
 
-    function handleMovieAdd(name) {
-        const movie = {
-            id: new Date().getTime(),
-            text: name,
-        };
+    function handle
 
-        const newMovies = [...initialState];
-        newMovies.push(movie);
 
-        setMovies(newMovies);
-    }
 
-    return (
-        <div>
-            <AddMovieForm onAdd={handleMovieAdd} />
-            <MovieList movies={movies} onDelete={handleDelete} />
-        </div>
-    );
+}
+
+function handleMovieAdd(name) {
+    const movie = {
+        id: new Date().getTime(),
+        text: name,
+    };
+
+    const newMovies = [...initialState];
+    newMovies.push(movie);
+
+    setMovies(newMovies);
+}
+
+return (
+    <div>
+        <AddMovieForm onAdd={handleMovieAdd} />
+        <MovieList movies={movies} onDelete={handleDelete} />
+    </div>
+);
 
 }
 ReactDOM.render(<App />, document.querySelector("#app"));
